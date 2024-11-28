@@ -2,9 +2,6 @@
 #include <Arduino.h>
 #include <string/SmartString.h>
 
-#define PROJECT_NAME "DebugTest"
-#define VERSION "1.0"
-
 REEFDUINO_NAMESPACE_USING
 
 class Config
