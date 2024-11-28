@@ -1,0 +1,103 @@
+#include "AquariumLampConfig.h"
+
+AquariumLampConfig appConfig {
+    {
+        {
+            {
+                .magicKey = 0x811B843A,
+                .size = sizeof(AquariumLampConfig),
+                .offset = 0,
+                .dstTimeChangeRule {"WITA", First, Sun, Mar, 2, 8 * 60},
+                .stdTimeChangeRule {"WITA", First, Sun, Mar, 2, 8 * 60}
+            },
+            .wifi = {
+                {
+                    .ssid = "SSID1",
+                    .password = "password",
+                    .hostname = "aquarium-lamp",
+                    .ip = {192, 168, 1, 166},
+                    .gateway = {192, 168, 1, 1},
+                    .subnet = {255, 255, 255, 0},
+                    .dns1 = {8, 8, 8, 8},
+                    .dns2 = {8, 8, 4, 4}
+                },
+                {
+                    .ssid = "SSID2",
+                    .password = "password",
+                    .hostname = "aquarium-lamp",
+                    .ip = {192, 168, 1, 166},
+                    .gateway = {192, 168, 1, 1},
+                    .subnet = {255, 255, 255, 0},
+                    .dns1 = {8, 8, 8, 8},
+                    .dns2 = {8, 8, 4, 4}
+                }
+            },
+            .ntp = {
+                .server = "pool.ntp.org",
+                .syncInterval = 3600000
+            }
+        },
+        .mqtt = {
+            .hostname = "192.168.1.1",
+            .port = 8883,
+            .clientId = "aquarium_lamp",
+            .username = "user",
+            .password = "password"
+        }
+    },
+    .lamp = {
+        .mode = ScheduledLedArrayMode::ManualMode,
+            .schedules = {
+                    {
+                            .from = {Time{(uint8_t) 0, (uint8_t) 0}},
+                            .brightness = {0, 0, 0, 0, 0},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 7, (uint8_t) 0}},
+                            .brightness = {0, 0, 0, 0, 0},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 8, (uint8_t) 0}},
+                            .brightness = {0.26, 0.11, 0.11, 0.16, 0.23},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 9, (uint8_t) 0}},
+                            .brightness = {0.46, 0.18, 0.15, 0.16, 0.44},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 10, (uint8_t) 0}},
+                            .brightness = {1.0, 0.35, 0.36, 0.35, 1.0},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 17, (uint8_t) 0}},
+                            .brightness = {1.0, 0.35, 0.36, 0.35, 1.0},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 18, (uint8_t) 0}},
+                            .brightness = {0.45, 0.24, 0.23, 0.28, 0.43},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 19, (uint8_t) 0}},
+                            .brightness = {0, 0, 0, 0, 0},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 21, (uint8_t) 0}},
+                            .brightness = {0.31, 0, 0, 0, 0.31},
+                            .enabled = true
+                    },
+                    {
+                            .from = {Time{(uint8_t) 23, (uint8_t) 0}},
+                            .brightness = {0.1, 0, 0, 0, 0.1},
+                            .enabled = true
+                    }
+        }
+    }
+};

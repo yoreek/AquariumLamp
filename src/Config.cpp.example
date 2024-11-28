@@ -1,0 +1,25 @@
+#include "Config.h"
+
+SMART_STRING_INIT_CONST(Config, DeviceSoftwareVersion, "1.0");
+SMART_STRING_INIT_CONST(Config, DeviceUniqId, "aquarium_lamp");
+SMART_STRING_INIT_CONST(Config, DeviceName, "AquariumLamp");
+
+#if defined(ESP8266)
+// Fingerprint of the broker CA
+// openssl x509 -in  server.crt -sha1 -noout -fingerprint
+const char *Config::MqttFingerprint PROGMEM = "91:23:F5:30:A0:1C:5D:31:7D:A0:ED:73:B8:91:EC:11:90:E3:AF:45";
+#else
+const char *Config::MqttCaCert PROGMEM = R"EOF(
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+)EOF";
+#endif
+
+const uint8_t Config::LedPin[] = {27, 26, 25, 33, 32};
+const uint8_t Config::LedFirstChannel = 0;
+const uint32_t Config::LedFreq = 500;
+const uint8_t Config::LedResolution = 8;
+const bool Config::LedInverted = false;
+const float Config::LedMaxChangeAtOnce = 0.01;
+const uint32_t Config::LedUpdateDelay = 200;

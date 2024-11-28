@@ -1,0 +1,5 @@
+.pio
+.vscode
+.idea
+src/Config.cpp
+src/AquariumLampConfig.cpp
