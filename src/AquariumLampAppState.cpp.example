@@ -1,31 +1,31 @@
-#include "AquariumLampConfig.h"
+#include "AquariumLampAppStateV5.h"
+#include <debug/Debug.h>
 
-AquariumLampConfig appConfig {
+AquariumLampAppStateV5 appState {
     {
         {
             {
-                .magicKey = 0x811B843A,
-                .size = sizeof(AquariumLampConfig),
-                .offset = 0,
                 .dstTimeChangeRule {"WITA", First, Sun, Mar, 2, 8 * 60},
                 .stdTimeChangeRule {"WITA", First, Sun, Mar, 2, 8 * 60}
             },
             .wifi = {
                 {
+                    .enabled = true,
                     .ssid = "SSID1",
                     .password = "password",
                     .hostname = "aquarium-lamp",
-                    .ip = {192, 168, 1, 166},
+                    .ip = {192, 168, 1, 169},
                     .gateway = {192, 168, 1, 1},
                     .subnet = {255, 255, 255, 0},
                     .dns1 = {8, 8, 8, 8},
                     .dns2 = {8, 8, 4, 4}
                 },
                 {
-                    .ssid = "SSID2",
+                    .enabled = true,
+                    .ssid = "SSID1",
                     .password = "password",
                     .hostname = "aquarium-lamp",
-                    .ip = {192, 168, 1, 166},
+                    .ip = {192, 168, 1, 169},
                     .gateway = {192, 168, 1, 1},
                     .subnet = {255, 255, 255, 0},
                     .dns1 = {8, 8, 8, 8},
@@ -38,15 +38,15 @@ AquariumLampConfig appConfig {
             }
         },
         .mqtt = {
-            .hostname = "192.168.1.1",
+            .ip = {192, 168, 1, 147},
             .port = 8883,
-            .clientId = "aquarium_lamp",
-            .username = "user",
+            .clientId = "aquarium_lamp2",
+            .username = "username",
             .password = "password"
         }
     },
     .lamp = {
-        .mode = ScheduledLedArrayMode::ManualMode,
+        .mode = ScheduledLedArrayMode::ScheduledMode,
             .schedules = {
                     {
                             .from = {Time{(uint8_t) 0, (uint8_t) 0}},

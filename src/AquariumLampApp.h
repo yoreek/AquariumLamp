@@ -1,6 +1,6 @@
 #pragma once
 #include <hass/app/HaApplication.h>
-#include "AquariumLampConfig.h"
+#include "AquariumLampAppStateV5.h"
 #include "Config.h"
 #include <switch/SmoothPwmSwitch.h>
 #include <hass/devices/scheduled_switch/HassScheduledLedArray.h>
@@ -8,7 +8,7 @@
 
 REEFDUINO_NAMESPACE_USING
 
-class AquariumLampApp : public HaApplication
+class AquariumLampApp : public HaApplication<AquariumLampAppStateV5>
 {
 public:
     SMART_STRING_DEF_CONST(LampUniqId);
@@ -16,7 +16,10 @@ public:
 
     AquariumLampApp();
     void begin() override;
-    void loop() override;
+    void loop() override { HaApplication<AquariumLampAppStateV5>::loop(); };
+    void loop(uint32_t uptime) override;
+    void loop1s(uint32_t uptime) override;
+    void loop200ms(uint32_t uptime) override;
 
 protected:
     SmoothPwmSwitch *_ledArray[LEDS_NUM];

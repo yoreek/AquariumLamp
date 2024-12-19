@@ -22,4 +22,3 @@ const uint32_t Config::LedFreq = 500;
 const uint8_t Config::LedResolution = 8;
 const bool Config::LedInverted = false;
 const float Config::LedMaxChangeAtOnce = 0.01;
-const uint32_t Config::LedUpdateDelay = 200;

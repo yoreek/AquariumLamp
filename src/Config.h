@@ -21,5 +21,4 @@ public:
     static const uint8_t LedResolution;
     static const bool LedInverted;
     static const float LedMaxChangeAtOnce;
-    static const uint32_t LedUpdateDelay;
 };

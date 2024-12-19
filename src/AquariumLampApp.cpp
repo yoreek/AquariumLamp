@@ -1,8 +1,7 @@
 #include "AquariumLampApp.h"
-#include "AquariumLampConfig.h"
 #include <switch/LedcPwmSwitch.h>
 
-extern AquariumLampConfig appConfig;
+extern AquariumLampAppStateV5 appState;
 
 SMART_STRING_INIT_CONST(AquariumLampApp, LampUniqId, "lamp");
 SMART_STRING_INIT_CONST(AquariumLampApp, LampName, "Lamp");
@@ -10,12 +9,12 @@ SMART_STRING_INIT_CONST(AquariumLampApp, LampName, "Lamp");
 AquariumLampApp::AquariumLampApp()
         : HaApplication(Config::DeviceUniqId,
                         Config::DeviceName,
-                        &appConfig),
+                        &appState),
           _ledArray(),
-          _lamp((AbstractPwmSwitch **) _ledArray, &appConfig.lamp),
+          _lamp((AbstractPwmSwitch **) _ledArray, &appState.lamp),
           _haLamp(LampUniqId,
                   &_lamp,
-                  &appConfig.lamp,
+                  &appState.lamp,
                   (AbstractPwmSwitch **) _ledArray)
 {
     _haLamp.setName(&LampName);
@@ -27,8 +26,7 @@ AquariumLampApp::AquariumLampApp()
                         Config::LedFreq,
                         Config::LedResolution,
                         Config::LedInverted),
-                Config::LedMaxChangeAtOnce,
-                Config::LedUpdateDelay);
+                Config::LedMaxChangeAtOnce);
     }
     _mainDevice.addDevice(&_haLamp);
 }
@@ -54,11 +52,20 @@ void AquariumLampApp::_processLedSwitches()
         led->loop();
 }
 
-void AquariumLampApp::loop()
+void AquariumLampApp::loop(uint32_t uptime)
 {
-    HaApplication::loop();
-    _config->loop();
-    _lamp.loop();
-    _haLamp.loop();
+    HaApplication::loop(uptime);
+    _lamp.loop(uptime);
+}
+
+void AquariumLampApp::loop1s(uint32_t uptime)
+{
+    HaApplication::loop1s(uptime);
+    _haLamp.loop1s(uptime);
+}
+
+void AquariumLampApp::loop200ms(uint32_t uptime)
+{
+    HaApplication::loop200ms(uptime);
     _processLedSwitches();
 }

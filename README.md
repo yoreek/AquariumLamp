@@ -18,7 +18,7 @@ Configure
 ### Copy examples of files
 ```shell
 cp src/Config.cpp.example src/Config.cpp
-cp src/AquariumLampConfig.cpp.example src/AquariumLampConfig.cpp
+cp src/AquariumLampAppState.cpp.example src/AquariumLampAppState.cpp
 ```
 
 ### Edit src/Config.cpp

@@ -2,4 +2,4 @@
 .vscode
 .idea
 src/Config.cpp
-src/AquariumLampConfig.cpp
+src/AquariumLampAppState.cpp
