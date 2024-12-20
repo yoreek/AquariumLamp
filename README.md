@@ -17,6 +17,7 @@ Configure
 
 ### Copy examples of files
 ```shell
+cp platformio.ini.example src/platformio.ini
 cp src/Config.cpp.example src/Config.cpp
 cp src/AquariumLampAppState.cpp.example src/AquariumLampAppState.cpp
 ```

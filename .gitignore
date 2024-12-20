@@ -1,5 +1,6 @@
 .pio
 .vscode
 .idea
+platformio.ini
 src/Config.cpp
 src/AquariumLampAppState.cpp
