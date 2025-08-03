@@ -11,11 +11,11 @@ AquariumLampApp::AquariumLampApp()
                         Config::DeviceName,
                         &appState),
           _ledArray(),
-          _lamp((AbstractPwmSwitch **) _ledArray, &appState.lamp),
+          _lamp(reinterpret_cast<AbstractPwmSwitch **>(_ledArray), &appState.lamp),
           _haLamp(LampUniqId,
                   &_lamp,
                   &appState.lamp,
-                  (AbstractPwmSwitch **) _ledArray)
+                  reinterpret_cast<AbstractPwmSwitch **>(_ledArray))
 {
     _haLamp.setName(&LampName);
     for (uint8_t i = 0; i < LEDS_NUM; i++) {
