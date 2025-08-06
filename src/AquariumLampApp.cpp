@@ -1,21 +1,22 @@
 #include "AquariumLampApp.h"
 #include <switch/LedcPwmSwitch.h>
 
-extern AquariumLampAppStateV5 appState;
+extern AquariumLampAppStateV6 appState;
 
-SMART_STRING_INIT_CONST(AquariumLampApp, LampUniqId, "lamp");
-SMART_STRING_INIT_CONST(AquariumLampApp, LampName, "Lamp");
+SMART_STRING_INIT_CONST(AquariumLampApp, LampUniqId, "lamp2");
+SMART_STRING_INIT_CONST(AquariumLampApp, LampName, "Lamp2");
 
 AquariumLampApp::AquariumLampApp()
-        : HaApplication(Config::DeviceUniqId,
-                        Config::DeviceName,
-                        &appState),
-          _ledArray(),
-          _lamp(reinterpret_cast<AbstractPwmSwitch **>(_ledArray), &appState.lamp),
-          _haLamp(LampUniqId,
-                  &_lamp,
-                  &appState.lamp,
-                  reinterpret_cast<AbstractPwmSwitch **>(_ledArray))
+    : HaApplication(Config::DeviceUniqId,
+                    Config::DeviceName,
+                    &appState),
+      _ledArray(),
+      _lamp(reinterpret_cast<AbstractPwmSwitch **>(_ledArray), &appState.lamp),
+      _haLamp(LampUniqId,
+              &_lamp,
+              &appState.lamp,
+              reinterpret_cast<AbstractPwmSwitch **>(_ledArray)),
+      _api(_webServer)
 {
     _haLamp.setName(&LampName);
     for (uint8_t i = 0; i < LEDS_NUM; i++) {

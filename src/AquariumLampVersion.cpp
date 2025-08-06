@@ -1,4 +1,4 @@
 #include "AquariumLampVersion.h"
 
 REEFDUINO_NAMESPACE_USING
-const Version AquariumLampVersion("1.1", 1, 1);
+const Version AquariumLampVersion("1.2", 1, 2);
