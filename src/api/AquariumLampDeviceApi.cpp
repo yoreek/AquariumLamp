@@ -1,18 +1,16 @@
 #include "AquariumLampDeviceApi.h"
 #include "AquariumLampVersion.h"
-#include "AquariumLampAppStateV6.h"
+#include "../AquariumLampApp.h"
+#include "../AquariumLampAppStateV6.h"
+#include "time/TimeUtil.h"
 
 extern AquariumLampAppStateV6 appState;
-
-AquariumLampDeviceApi::AquariumLampDeviceApi(WebServerManager& webServer)
-    : _webServer(webServer)
-{
-}
+extern AquariumLampApp app;
 
 void AquariumLampDeviceApi::begin() const
 {
     _webServer.getServer().on("/api/device/info", HTTP_GET, [this](AsyncWebServerRequest* request) {
-        DynamicJsonDocument doc(512);
+        StaticJsonDocument<512> doc;
         char buf[50];
 
         doc["firmware"] = AquariumLampVersion.full;
@@ -38,17 +36,65 @@ void AquariumLampDeviceApi::begin() const
         doc["heapUsage"] = (ESP.getHeapSize() - ESP.getFreeHeap()) * 100 / ESP.getHeapSize();
         doc["maxFreeBlockSize"] = ESP.getMaxAllocHeap();
 
-        uint32_t uptimeSecs = millis() / 1000;
+        const uint32_t uptimeSecs = millis() / 1000;
         // 365 day(s) 23 hour(s) 59 minute(s) 59 second(s)
         TimeDelta(static_cast<int32_t>(uptimeSecs)).toString(buf);
         doc["uptime"] = buf;
 
-        auto currentTime = DateTime::current();
-        currentTime.toString(buf);
+        const auto currentTime = DateTime::current();
+        currentTime.iso8601(buf);
         doc["time"] = buf;
 
-        doc["timezone"] = appState.timeZoneId;
+        doc["timezone"] = appState.timezone;
 
-        _webServer.sendSuccess(request, doc);
+        rd::WebServerManager::sendSuccess(request, doc);
     });
+
+    _webServer.getServer().on(
+        "/api/device/reboot", HTTP_POST,
+        [](AsyncWebServerRequest *request) {
+            LOG_DEBUG("reboot");
+            app.reboot();
+            rd::WebServerManager::sendSuccess(request);
+        }, nullptr, nullptr
+    );
+
+    _webServer.getServer().on(
+        "/api/device/factory_reset", HTTP_POST,
+        [](AsyncWebServerRequest *request) {
+            LOG_DEBUG("factory reset");
+            app.factoryReset();
+            rd::WebServerManager::sendSuccess(request);
+        }, nullptr, nullptr
+    );
+
+    // { "date": "2025-08-13T18:22:00" }
+    _webServer.getServer().on(
+        "/api/device/time", HTTP_POST,
+        WebServerManager::blankCallback, nullptr,
+        [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t, size_t) {
+            StaticJsonDocument<256> doc;
+            if (deserializeJson(doc, data, len)) {
+                rd::WebServerManager::sendError(request, 400, "BAD_JSON", "Bad JSON"); return;
+            }
+
+            char date[32] = {0};
+            if (const auto obj = doc.as<JsonObject>(); !_assignString(obj, "date", date)) {
+                rd::WebServerManager::sendError(request, 400, "MISSING_FIELD",
+                                                "Fields 'date' and 'time' are required");
+                return;
+            }
+            const DateTime dt(date, strlen(date));
+            if (!dt.isValid() || dt.isNull()) {
+                rd::WebServerManager::sendError(request, 400, "INVALID_DATE_TIME",
+                                                "Invalid date or time format");
+                return;
+            }
+
+            const uint32_t utc = systemTimezone.toUTC(dt.unixtime());
+            setTime(utc);
+
+            rd::WebServerManager::sendSuccess(request);
+        }
+    );
 }

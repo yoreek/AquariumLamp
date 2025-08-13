@@ -16,7 +16,10 @@ AquariumLampApp::AquariumLampApp()
               &_lamp,
               &appState.lamp,
               reinterpret_cast<AbstractPwmSwitch **>(_ledArray)),
-      _api(_webServer)
+      _lampApi(_webServer),
+      _deviceApi(_webServer),
+      _wifiApi(_webServer),
+      _ntpApi(_webServer)
 {
     _haLamp.setName(&LampName);
     for (uint8_t i = 0; i < LEDS_NUM; i++) {
@@ -45,6 +48,10 @@ void AquariumLampApp::begin()
     {
         led->begin();
     }
+    _lampApi.begin();
+    _deviceApi.begin();
+    _wifiApi.begin();
+    _ntpApi.begin();
 }
 
 void AquariumLampApp::_processLedSwitches()

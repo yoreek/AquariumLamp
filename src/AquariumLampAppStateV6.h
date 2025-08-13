@@ -11,7 +11,7 @@ REEFDUINO_NAMESPACE_USING
 class AquariumLampAppStateV6 : public MqttAppStateV4<AQUARIUM_LAMP_STATE_V6_AP_COUNT>
 {
 public:
-    static const uint32_t magicKey = 0x78680335;
+    static const uint32_t magicKey = 0x78680337;
     ScheduledLedArrayStateV1<AQUARIUM_LAMP_STATE_V6_CHANNELS, AQUARIUM_LAMP_STATE_V6_SCHEDULES> lamp;
     bool isUpdated() const;
     void markAsSaved();

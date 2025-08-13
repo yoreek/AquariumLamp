@@ -1,11 +1,9 @@
 #pragma once
-#include <ArduinoJson.h>
 #include "AquariumLampBaseApi.h"
-
 
 REEFDUINO_NAMESPACE_USING
 
-class AquariumLampDeviceApi final : public AquariumLampBaseApi {
+class AquariumLampNtpApi final : public AquariumLampBaseApi {
 public:
     using AquariumLampBaseApi::AquariumLampBaseApi;
     void begin() const override;
