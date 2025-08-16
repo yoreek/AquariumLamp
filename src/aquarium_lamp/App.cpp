@@ -37,7 +37,9 @@ App::App()
       _lampApi(_webServer),
       _deviceApi(_webServer),
       _wifiApi(_webServer),
-      _ntpApi(_webServer)
+      _ntpApi(_webServer),
+      _tempApi(_webServer),
+      _fanApi(_webServer)
 {
     _fanAutoSwitch.addDependency(&_overheatingSensor, true);
     _haLamp.setName(&LampName);
@@ -79,6 +81,8 @@ void App::begin()
     _deviceApi.begin();
     _wifiApi.begin();
     _ntpApi.begin();
+    _tempApi.begin();
+    _fanApi.begin();
 }
 
 void App::_processLedSwitches()

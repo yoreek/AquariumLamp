@@ -18,6 +18,8 @@
 #include "api/LampApi.h"
 #include "api/WifiApi.h"
 #include "api/NtpApi.h"
+#include "api/TempApi.h"
+#include "api/FanApi.h"
 
 #include "device/OneWireDeviceScanner.h"
 
@@ -54,6 +56,7 @@ public:
     {
         return _lamp.getManualBrightness(channel);
     };
+    FilteredDallasSensor &getTempSensor() { return _tempSensor; };
 
 protected:
     SmoothPwmSwitch *_ledArray[LEDS_NUM];
@@ -77,6 +80,8 @@ protected:
     LampApi _lampApi;
     WifiApi _wifiApi;
     NtpApi _ntpApi;
+    TempApi _tempApi;
+    FanApi _fanApi;
 
     void _updateSensorsStates();
     void _scanDevices();
