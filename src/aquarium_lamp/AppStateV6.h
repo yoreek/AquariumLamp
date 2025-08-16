@@ -11,7 +11,8 @@ REEFDUINO_NAMESPACE_USING
 #define AQUARIUM_LAMP_STATE_V6_CHANNELS 5
 #define AQUARIUM_LAMP_STATE_V6_SCHEDULES 10
 
-class AquariumLampAppStateV6 : public MqttAppStateV4<AQUARIUM_LAMP_STATE_V6_AP_COUNT>
+namespace aquarium_lamp {
+class AppStateV6 : public MqttAppStateV4<AQUARIUM_LAMP_STATE_V6_AP_COUNT>
 {
 public:
     static const uint32_t magicKey = 0x78680339;
@@ -23,4 +24,5 @@ public:
     bool isUpdated() const;
     void markAsSaved();
     void migrate(AbstractStorage *storage, uint32_t prevMagicKey);
+};
 };

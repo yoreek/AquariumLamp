@@ -1,15 +1,17 @@
 #pragma once
-#include "AquariumLampBaseApi.h"
+#include "BaseApi.h"
 
 REEFDUINO_NAMESPACE_USING
 
-class AquariumLampWifiApi final : public AquariumLampBaseApi {
+namespace aquarium_lamp {
+class WifiApi final : public BaseApi {
 public:
-    using AquariumLampBaseApi::AquariumLampBaseApi;
+    using BaseApi::BaseApi;
     void begin() const override;
 
 protected:
 
     static bool _updateStaSettings(const JsonArray &arr) ;
     static void _updateApSettings(const JsonObject &node) ;
+};
 };

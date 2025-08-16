@@ -1,7 +1,6 @@
-#include "AquariumLampAppStateV5.h"
-#include <debug/Debug.h>
+#include "AppStateV5.h"
 
-AquariumLampAppStateV5 appState {
+aquarium_lamp::AppStateV5 appState {
     {
         {
             {

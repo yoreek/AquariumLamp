@@ -1,23 +1,25 @@
 #include <Arduino.h>
 #include "debug/Debug.h"
-#include "AquariumLampApp.h"
-#include "AquariumLampVersion.h"
+#include "aquarium_lamp/App.h"
+#include "Version.h"
 #include <version/ReefDuinoVersion.h>
 
 REEFDUINO_NAMESPACE_USING
 
-AquariumLampApp app;
+namespace aquarium_lamp {
+aquarium_lamp::App app;
+};
 
 void setup()
 {
     DEBUG_BEGIN
-    LOG_INFO("Project version: %s", AquariumLampVersion.full);
+    LOG_INFO("Project version: %s", aquarium_lamp::Version.full);
     LOG_INFO("ReefDuino version: %s", ReefDuinoVersion.full);
-    app.begin();
+    aquarium_lamp::app.begin();
 }
 
 void loop()
 {
     DEBUG_LOOP
-    app.loop();
+    aquarium_lamp::app.loop();
 }

@@ -1,16 +1,17 @@
-#include "AquariumLampApp.h"
+#include "App.h"
 #include <switch/LedcPwmSwitch.h>
 
-extern AquariumLampAppStateV6 appState;
+namespace aquarium_lamp {
+extern AppStateV6 appState;
 
-SMART_STRING_INIT_CONST(AquariumLampApp, LampUniqId, "lamp2");
-SMART_STRING_INIT_CONST(AquariumLampApp, LampName, "Lamp2");
-SMART_STRING_INIT_CONST(AquariumLampApp, TempSensorUniqId, "temp");
-SMART_STRING_INIT_CONST(AquariumLampApp, TempSensorName, "Temp");
-SMART_STRING_INIT_CONST(AquariumLampApp, FanSwitchUniqId, "fan");
-SMART_STRING_INIT_CONST(AquariumLampApp, FanSwitchName, "Fan");
+SMART_STRING_INIT_CONST(App, LampUniqId, "lamp2");
+SMART_STRING_INIT_CONST(App, LampName, "Lamp2");
+SMART_STRING_INIT_CONST(App, TempSensorUniqId, "temp");
+SMART_STRING_INIT_CONST(App, TempSensorName, "Temp");
+SMART_STRING_INIT_CONST(App, FanSwitchUniqId, "fan");
+SMART_STRING_INIT_CONST(App, FanSwitchName, "Fan");
 
-AquariumLampApp::AquariumLampApp()
+App::App()
     : HaApplication(Config::DeviceUniqId,
                     Config::DeviceName,
                     &appState),
@@ -59,7 +60,7 @@ AquariumLampApp::AquariumLampApp()
     _mainDevice.addDevice(&_haFanSwitch);
 }
 
-void AquariumLampApp::begin()
+void App::begin()
 {
     HaApplication::begin();
     WiFi.setSleep(false);
@@ -80,13 +81,13 @@ void AquariumLampApp::begin()
     _ntpApi.begin();
 }
 
-void AquariumLampApp::_processLedSwitches()
+void App::_processLedSwitches()
 {
     for (auto & led : _ledArray)
         led->loop();
 }
 
-void AquariumLampApp::loop(uint32_t uptime)
+void App::loop(uint32_t uptime)
 {
     HaApplication::loop(uptime);
     _lamp.loop(uptime);
@@ -96,7 +97,7 @@ void AquariumLampApp::loop(uint32_t uptime)
     _oneWireDeviceScanner.loop(uptime);
 }
 
-void AquariumLampApp::loop1s(uint32_t uptime)
+void App::loop1s(uint32_t uptime)
 {
     HaApplication::loop1s(uptime);
     _haLamp.loop1s(uptime);
@@ -105,13 +106,13 @@ void AquariumLampApp::loop1s(uint32_t uptime)
     _scanDevices();
 }
 
-void AquariumLampApp::loop200ms(uint32_t uptime)
+void App::loop200ms(uint32_t uptime)
 {
     HaApplication::loop200ms(uptime);
     _processLedSwitches();
 }
 
-void AquariumLampApp::_updateSensorsStates()
+void App::_updateSensorsStates()
 {
     if ((millis() - _lastStateUpdatedAt) >= Config::SensorStateUpdateInterval) {
         if (_tempSensor.isReady()) {
@@ -121,7 +122,7 @@ void AquariumLampApp::_updateSensorsStates()
     }
 }
 
-void AquariumLampApp::_scanDevices()
+void App::_scanDevices()
 {
     if (_oneWireDeviceScanner.inProgress()) {
         LOG_DEBUG("INPROGRESS");
@@ -145,4 +146,5 @@ void AquariumLampApp::_scanDevices()
         LOG_DEBUG("start scanning for OneWire devices");
         _oneWireDeviceScanner.start();
     }
+}
 }

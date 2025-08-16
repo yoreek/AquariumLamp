@@ -6,25 +6,25 @@
 #include <sensor/temperature/TriggeredTemperatureSensor.h>
 #include <switch/DigitalPinSwitch.h>
 #include <switch/AutoSwitch.h>
-#include <sensor/DebouncingSensor.h>
 #include <hass/app/HaApplication.h>
-#include "AquariumLampAppStateV6.h"
-#include "Config.h"
+#include "AppStateV6.h"
+#include "../Config.h"
 #include <switch/SmoothPwmSwitch.h>
 #include <hass/devices/scheduled_switch/HassScheduledLedArray.h>
 #include "hass/devices/sensor/HassDallasSensor.h"
 #include "hass/devices/HassAutoSwitch.h"
 #include <schedule/ScheduledLedArray.h>
-#include "api/AquariumLampDeviceApi.h"
-#include "api/AquariumLampLampApi.h"
-#include "api/AquariumLampWifiApi.h"
-#include "api/AquariumLampNtpApi.h"
+#include "api/DeviceApi.h"
+#include "api/LampApi.h"
+#include "api/WifiApi.h"
+#include "api/NtpApi.h"
 
 #include "device/OneWireDeviceScanner.h"
 
 REEFDUINO_NAMESPACE_USING
 
-class AquariumLampApp : public HaApplication<AquariumLampAppStateV6>
+namespace aquarium_lamp {
+class App : public HaApplication<aquarium_lamp::AppStateV6>
 {
 public:
     SMART_STRING_DEF_CONST(LampUniqId);
@@ -34,9 +34,9 @@ public:
     SMART_STRING_DEF_CONST(FanSwitchUniqId);
     SMART_STRING_DEF_CONST(FanSwitchName);
 
-    AquariumLampApp();
+    App();
     void begin() override;
-    void loop() override { HaApplication<AquariumLampAppStateV6>::loop(); };
+    void loop() override { HaApplication<aquarium_lamp::AppStateV6>::loop(); };
     void loop(uint32_t uptime) override;
     void loop1s(uint32_t uptime) override;
     void loop200ms(uint32_t uptime) override;
@@ -73,11 +73,12 @@ protected:
     HassDallasSensor _haTempSensor;
     HassAutoSwitch _haFanSwitch;
 
-    AquariumLampDeviceApi _deviceApi;
-    AquariumLampLampApi _lampApi;
-    AquariumLampWifiApi _wifiApi;
-    AquariumLampNtpApi _ntpApi;
+    DeviceApi _deviceApi;
+    LampApi _lampApi;
+    WifiApi _wifiApi;
+    NtpApi _ntpApi;
 
     void _updateSensorsStates();
     void _scanDevices();
+};
 };

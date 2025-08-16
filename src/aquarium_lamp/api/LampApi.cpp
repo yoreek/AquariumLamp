@@ -1,15 +1,16 @@
-#include "AquariumLampLampApi.h"
+#include "LampApi.h"
 
-#include "../AquariumLampApp.h"
-#include "../AquariumLampAppStateV6.h"
+#include "../App.h"
+#include "../AppStateV6.h"
 
-extern AquariumLampAppStateV6 appState;
-extern AquariumLampApp app;
+namespace aquarium_lamp {
+extern AppStateV6 appState;
+extern App app;
 
-const char AquariumLampLampApi::Scheduled[] = "scheduled";
-const char AquariumLampLampApi::Manual[] = "manual";
+const char LampApi::Scheduled[] = "scheduled";
+const char LampApi::Manual[] = "manual";
 
-void AquariumLampLampApi::begin() const
+void LampApi::begin() const
 {
     _webServer.getServer().on(
         "/api/lamp/state", HTTP_GET, [](AsyncWebServerRequest* request){
@@ -165,7 +166,7 @@ void AquariumLampLampApi::begin() const
     );
 }
 
-bool AquariumLampLampApi::_setLampMode(const char *mode) {
+bool LampApi::_setLampMode(const char *mode) {
     if (strcmp(mode, Manual) == 0) {
         appState.lamp.mode = ScheduledLedArrayMode::ManualMode;
     } else if (strcmp(mode, Scheduled) == 0) {
@@ -175,4 +176,5 @@ bool AquariumLampLampApi::_setLampMode(const char *mode) {
     }
     appState.updated = true;
     return true;
+}
 }

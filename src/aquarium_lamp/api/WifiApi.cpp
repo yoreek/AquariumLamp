@@ -1,11 +1,12 @@
-#include "AquariumLampWifiApi.h"
-#include "../AquariumLampApp.h"
-#include "../AquariumLampAppStateV6.h"
+#include "WifiApi.h"
+#include "../App.h"
+#include "../AppStateV6.h"
 
-extern AquariumLampAppStateV6 appState;
-extern AquariumLampApp app;
+namespace aquarium_lamp {
+extern AppStateV6 appState;
+extern App app;
 
-void AquariumLampWifiApi::begin() const
+void WifiApi::begin() const
 {
     // WiFi scan
     _webServer.getServer().on(
@@ -95,7 +96,7 @@ void AquariumLampWifiApi::begin() const
     );
 }
 
-bool AquariumLampWifiApi::_updateStaSettings(const JsonArray &arr)
+bool WifiApi::_updateStaSettings(const JsonArray &arr)
 {
     for (uint8_t i = 0; i < arr.size(); i++) {
         if (i >= std::size(appState.wifi.sta)) break;
@@ -116,7 +117,7 @@ bool AquariumLampWifiApi::_updateStaSettings(const JsonArray &arr)
     return true;
 }
 
-void AquariumLampWifiApi::_updateApSettings(const JsonObject &node)
+void WifiApi::_updateApSettings(const JsonObject &node)
 {
     auto * ap = &appState.wifi.ap;
     _assignBool(node, "enabled", ap->enabled);
@@ -125,4 +126,5 @@ void AquariumLampWifiApi::_updateApSettings(const JsonObject &node)
     _assignIP(node, "ip", ap->ip);
     _assignIP(node, "gateway", ap->gateway);
     _assignIP(node, "subnet", ap->subnet);
+}
 }

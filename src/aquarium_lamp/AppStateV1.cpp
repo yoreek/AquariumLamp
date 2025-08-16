@@ -1,17 +1,18 @@
-#include "AquariumLampAppStateV1.h"
+#include "AppStateV1.h"
 
-bool AquariumLampAppStateV1::isUpdated() const
+namespace aquarium_lamp {
+bool AppStateV1::isUpdated() const
 {
     return MqttAppStateV1::isUpdated() || lamp.isUpdated();
 }
 
-void AquariumLampAppStateV1::markAsSaved()
+void AppStateV1::markAsSaved()
 {
     MqttAppStateV1::markAsSaved();
     lamp.markAsSaved();
 }
 
-//AquariumLampAppStateV1 appStateV1 {
+//AppStateV1 appStateV1 {
 //    {
 //        {
 //            {
@@ -109,3 +110,4 @@ void AquariumLampAppStateV1::markAsSaved()
 //        }
 //    }
 //};
+}

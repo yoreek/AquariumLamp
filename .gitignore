@@ -3,4 +3,4 @@
 .idea
 platformio.ini
 src/Config.cpp
-src/AquariumLampAppState.cpp
+src/aquarium_lamp/AppState.cpp

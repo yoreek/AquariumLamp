@@ -1,11 +1,12 @@
-#include "AquariumLampNtpApi.h"
-#include "../AquariumLampApp.h"
-#include "../AquariumLampAppStateV6.h"
+#include "NtpApi.h"
+#include "../App.h"
+#include "../AppStateV6.h"
 
-extern AquariumLampAppStateV6 appState;
-extern AquariumLampApp app;
+namespace aquarium_lamp {
+extern AppStateV6 appState;
+extern App app;
 
-void AquariumLampNtpApi::begin() const
+void NtpApi::begin() const
 {
     _webServer.getServer().on(
         "/api/ntp", HTTP_GET,
@@ -40,4 +41,5 @@ void AquariumLampNtpApi::begin() const
             rd::WebServerManager::sendSuccess(request);
         }
     );
+}
 }

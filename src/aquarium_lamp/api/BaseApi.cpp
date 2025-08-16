@@ -1,11 +1,12 @@
-#include "AquariumLampBaseApi.h"
+#include "BaseApi.h"
 
-AquariumLampBaseApi::AquariumLampBaseApi(WebServerManager& webServer)
+namespace aquarium_lamp {
+BaseApi::BaseApi(WebServerManager& webServer)
     : _webServer(webServer)
 {
 }
 
-bool AquariumLampBaseApi::_assignIP(const JsonObject &obj, const char *key, uint8_t (&dst)[4])
+bool BaseApi::_assignIP(const JsonObject &obj, const char *key, uint8_t (&dst)[4])
 {
     if (!obj.containsKey(key)) return false;
     if (IPAddress ipAddr; ipAddr.fromString(obj[key].as<const char *>())) {
@@ -15,11 +16,12 @@ bool AquariumLampBaseApi::_assignIP(const JsonObject &obj, const char *key, uint
     return false;
 }
 
-bool AquariumLampBaseApi::_assignBool(const JsonObject &obj, const char *key, bool &dst)
+bool BaseApi::_assignBool(const JsonObject &obj, const char *key, bool &dst)
 {
     if (obj.containsKey(key)) {
         dst = obj["enabled"].as<bool>();
         return true;
     }
     return false;
+}
 }

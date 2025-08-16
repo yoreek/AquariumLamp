@@ -3,10 +3,11 @@
 
 REEFDUINO_NAMESPACE_USING
 
-class AquariumLampBaseApi {
+namespace aquarium_lamp {
+class BaseApi {
 public:
-    explicit AquariumLampBaseApi(WebServerManager& webServer);
-    virtual ~AquariumLampBaseApi() = default;
+    explicit BaseApi(WebServerManager& webServer);
+    virtual ~BaseApi() = default;
     virtual void begin() const = 0;
 
 protected:
@@ -23,4 +24,5 @@ protected:
     }
     static bool _assignIP(const JsonObject &obj, const char *key, uint8_t (&dst)[4]);
     static bool _assignBool(const JsonObject &obj, const char *key, bool &dst);
+};
 };

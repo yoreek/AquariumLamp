@@ -1,19 +1,20 @@
-#include "AquariumLampDeviceApi.h"
-#include "AquariumLampVersion.h"
-#include "../AquariumLampApp.h"
-#include "../AquariumLampAppStateV6.h"
+#include "DeviceApi.h"
+#include "Version.h"
+#include "../App.h"
+#include "../AppStateV6.h"
 #include "time/TimeUtil.h"
 
-extern AquariumLampAppStateV6 appState;
-extern AquariumLampApp app;
+namespace aquarium_lamp {
+extern AppStateV6 appState;
+extern App app;
 
-void AquariumLampDeviceApi::begin() const
+void DeviceApi::begin() const
 {
     _webServer.getServer().on("/api/device/info", HTTP_GET, [this](AsyncWebServerRequest* request) {
         StaticJsonDocument<512> doc;
         char buf[50];
 
-        doc["firmware"] = AquariumLampVersion.full;
+        doc["firmware"] = aquarium_lamp::Version.full;
 
         // IP: берём текущий локальный IP (если подключены), иначе AP
         String ipStr = "0.0.0.0";
@@ -97,4 +98,5 @@ void AquariumLampDeviceApi::begin() const
             rd::WebServerManager::sendSuccess(request);
         }
     );
+}
 }
