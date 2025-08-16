@@ -21,4 +21,7 @@ public:
     static const uint8_t LedResolution;
     static const bool LedInverted;
     static const float LedMaxChangeAtOnce;
+    static const uint8_t FanPin;
+    static const uint8_t OneWirePin;
+    static const uint32_t SensorStateUpdateInterval;
 };
