@@ -1,9 +1,9 @@
 #include "TempApi.h"
 #include "../App.h"
-#include "../AppStateV6.h"
+#include "../AppStateV7.h"
 
 namespace aquarium_lamp {
-extern AppStateV6 appState;
+extern AppStateV7 appState;
 extern App app;
 
 void TempApi::begin() const

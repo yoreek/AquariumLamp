@@ -7,7 +7,7 @@
 #include <switch/DigitalPinSwitch.h>
 #include <switch/AutoSwitch.h>
 #include <hass/app/HaApplication.h>
-#include "AppStateV6.h"
+#include "AppStateV7.h"
 #include "../Config.h"
 #include <switch/SmoothPwmSwitch.h>
 #include <hass/devices/scheduled_switch/HassScheduledLedArray.h>
@@ -20,13 +20,14 @@
 #include "api/NtpApi.h"
 #include "api/TempApi.h"
 #include "api/FanApi.h"
+#include "api/MqttApi.h"
 
 #include "device/OneWireDeviceScanner.h"
 
 REEFDUINO_NAMESPACE_USING
 
 namespace aquarium_lamp {
-class App : public HaApplication<aquarium_lamp::AppStateV6>
+class App : public HaApplication<aquarium_lamp::AppStateV7>
 {
 public:
     SMART_STRING_DEF_CONST(LampUniqId);
@@ -38,7 +39,7 @@ public:
 
     App();
     void begin() override;
-    void loop() override { HaApplication<aquarium_lamp::AppStateV6>::loop(); };
+    void loop() override { HaApplication<aquarium_lamp::AppStateV7>::loop(); };
     void loop(uint32_t uptime) override;
     void loop1s(uint32_t uptime) override;
     void loop200ms(uint32_t uptime) override;
@@ -82,6 +83,7 @@ protected:
     NtpApi _ntpApi;
     TempApi _tempApi;
     FanApi _fanApi;
+    MqttApi _mqttApi;
 
     void _updateSensorsStates();
     void _scanDevices();

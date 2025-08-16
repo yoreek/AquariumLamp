@@ -2,7 +2,7 @@
 #include <switch/LedcPwmSwitch.h>
 
 namespace aquarium_lamp {
-extern AppStateV6 appState;
+extern AppStateV7 appState;
 
 SMART_STRING_INIT_CONST(App, LampUniqId, "lamp2");
 SMART_STRING_INIT_CONST(App, LampName, "Lamp2");
@@ -39,7 +39,8 @@ App::App()
       _wifiApi(_webServer),
       _ntpApi(_webServer),
       _tempApi(_webServer),
-      _fanApi(_webServer)
+      _fanApi(_webServer),
+      _mqttApi(_webServer)
 {
     _fanAutoSwitch.addDependency(&_overheatingSensor, true);
     _haLamp.setName(&LampName);
@@ -83,6 +84,7 @@ void App::begin()
     _ntpApi.begin();
     _tempApi.begin();
     _fanApi.begin();
+    _mqttApi.begin();
 }
 
 void App::_processLedSwitches()

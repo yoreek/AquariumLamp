@@ -1,9 +1,9 @@
 #include "WifiApi.h"
 #include "../App.h"
-#include "../AppStateV6.h"
+#include "../AppStateV7.h"
 
 namespace aquarium_lamp {
-extern AppStateV6 appState;
+extern AppStateV7 appState;
 extern App app;
 
 void WifiApi::begin() const
@@ -60,6 +60,8 @@ void WifiApi::begin() const
                 staNode["subnet"] = IPAddress(config.subnet).toString();
                 staNode["dns1"] = IPAddress(config.dns1).toString();
                 staNode["dns2"] = IPAddress(config.dns2).toString();
+                staNode["dhcp"] = config.dhcp;
+                staNode["autoDns"] = config.autoDns;
             }
 
             const auto apNode = doc.createNestedObject("ap");
@@ -112,6 +114,8 @@ bool WifiApi::_updateStaSettings(const JsonArray &arr)
         _assignIP(staNode, "subnet", sta->subnet);
         _assignIP(staNode, "dns1", sta->dns1);
         _assignIP(staNode, "dns2", sta->dns2);
+        _assignBool(staNode, "dhcp", sta->dhcp);
+        _assignBool(staNode, "autoDns", sta->autoDns);
     }
 
     return true;
