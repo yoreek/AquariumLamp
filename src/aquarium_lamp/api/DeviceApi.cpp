@@ -3,6 +3,7 @@
 #include "../App.h"
 #include "../AppStateV7.h"
 #include "time/TimeUtil.h"
+#include "version/ReefDuinoVersion.h"
 
 namespace aquarium_lamp {
 extern AppStateV7 appState;
@@ -15,6 +16,7 @@ void DeviceApi::begin() const
         char buf[50];
 
         doc["firmware"] = aquarium_lamp::Version.full;
+        doc["reefduino"] = ReefDuinoVersion.full;
 
         // IP: берём текущий локальный IP (если подключены), иначе AP
         String ipStr = "0.0.0.0";
