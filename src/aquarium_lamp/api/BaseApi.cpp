@@ -19,7 +19,7 @@ bool BaseApi::_assignIP(const JsonObject &obj, const char *key, uint8_t (&dst)[4
 bool BaseApi::_assignBool(const JsonObject &obj, const char *key, bool &dst)
 {
     if (obj.containsKey(key)) {
-        dst = obj["enabled"].as<bool>();
+        dst = obj[key].as<bool>();
         return true;
     }
     return false;
