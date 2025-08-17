@@ -26,7 +26,6 @@ App::App()
 
       _lastStateUpdatedAt(0),
       _oneWireDeviceScanner(&_oneWire),
-      _lastScannedAt(0),
 
       _haLamp(LampUniqId,
               &_lamp,
@@ -40,7 +39,8 @@ App::App()
       _ntpApi(_webServer),
       _tempApi(_webServer),
       _fanApi(_webServer),
-      _mqttApi(_webServer)
+      _mqttApi(_webServer),
+      _oneWireDeviceApi(_webServer)
 {
     _fanAutoSwitch.addDependency(&_overheatingSensor, true);
     _haLamp.setName(&LampName);
@@ -85,6 +85,7 @@ void App::begin()
     _tempApi.begin();
     _fanApi.begin();
     _mqttApi.begin();
+    _oneWireDeviceApi.begin();
 }
 
 void App::_processLedSwitches()
@@ -108,8 +109,6 @@ void App::loop1s(uint32_t uptime)
     HaApplication::loop1s(uptime);
     _haLamp.loop1s(uptime);
     _updateSensorsStates();
-    // _fanSwitch.toggle(!_fanSwitch.isTurnedOn());
-    _scanDevices();
 }
 
 void App::loop200ms(uint32_t uptime)
@@ -128,29 +127,29 @@ void App::_updateSensorsStates()
     }
 }
 
-void App::_scanDevices()
-{
-    if (_oneWireDeviceScanner.inProgress()) {
-        LOG_DEBUG("INPROGRESS");
-        return;
-    }
-
-    if (_oneWireDeviceScanner.completed()) {
-        LOG_DEBUG("Found: %d devices", _oneWireDeviceScanner.devicesCount());
-        for (size_t i = 0; i < _oneWireDeviceScanner.devicesCount(); i++) {
-            const auto &device = _oneWireDeviceScanner.devices()[i];
-            LOG_DEBUG("Device %d: %02X %02X %02X %02X %02X %02X %02X %02X",
-                      i,
-                      device[0], device[1], device[2], device[3],
-                      device[4], device[5], device[6], device[7]);
-        }
-        _oneWireDeviceScanner.reset();
-        _lastScannedAt = millis();
-    }
-
-    if ((millis() - _lastScannedAt) >= 10000) {
-        LOG_DEBUG("start scanning for OneWire devices");
-        _oneWireDeviceScanner.start();
-    }
-}
+// void App::_scanDevices()
+// {
+//     if (_oneWireDeviceScanner.inProgress()) {
+//         LOG_DEBUG("INPROGRESS");
+//         return;
+//     }
+//
+//     if (_oneWireDeviceScanner.completed()) {
+//         LOG_DEBUG("Found: %d devices", _oneWireDeviceScanner.devicesCount());
+//         for (size_t i = 0; i < _oneWireDeviceScanner.devicesCount(); i++) {
+//             const auto &device = _oneWireDeviceScanner.devices()[i];
+//             LOG_DEBUG("Device %d: %02X %02X %02X %02X %02X %02X %02X %02X",
+//                       i,
+//                       device[0], device[1], device[2], device[3],
+//                       device[4], device[5], device[6], device[7]);
+//         }
+//         _oneWireDeviceScanner.reset();
+//         _lastScannedAt = millis();
+//     }
+//
+//     if ((millis() - _lastScannedAt) >= 10000) {
+//         LOG_DEBUG("start scanning for OneWire devices");
+//         _oneWireDeviceScanner.start();
+//     }
+// }
 }

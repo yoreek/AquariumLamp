@@ -21,6 +21,7 @@
 #include "api/TempApi.h"
 #include "api/FanApi.h"
 #include "api/MqttApi.h"
+#include "api/OneWireDeviceApi.h"
 
 #include "device/OneWireDeviceScanner.h"
 
@@ -58,6 +59,7 @@ public:
         return _lamp.getManualBrightness(channel);
     };
     FilteredDallasSensor &getTempSensor() { return _tempSensor; };
+    OneWireDeviceScanner &getOneWireDeviceScanner() { return _oneWireDeviceScanner; };
 
 protected:
     SmoothPwmSwitch *_ledArray[LEDS_NUM];
@@ -71,7 +73,6 @@ protected:
     AutoSwitch _fanAutoSwitch;
     time_t _lastStateUpdatedAt;
     OneWireDeviceScanner _oneWireDeviceScanner;
-    time_t _lastScannedAt;
 
     HassScheduledLedArray<LEDS_NUM, LEDS_SCHEDULES> _haLamp;
     HassDallasSensor _haTempSensor;
@@ -84,8 +85,8 @@ protected:
     TempApi _tempApi;
     FanApi _fanApi;
     MqttApi _mqttApi;
+    OneWireDeviceApi _oneWireDeviceApi;
 
     void _updateSensorsStates();
-    void _scanDevices();
 };
 };

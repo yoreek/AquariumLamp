@@ -34,12 +34,11 @@ void WifiApi::begin() const
     // start scan
     _webServer.getServer().on(
         "/api/wifi/scan", HTTP_POST,
-        WebServerManager::blankCallback, nullptr,
-        [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t, size_t) {
+        [](AsyncWebServerRequest* request) {
             WifiScanner &scanner = app.wifi().getScanner();
             scanner.startScan();
             rd::WebServerManager::sendSuccess(request);
-        }
+        },nullptr, nullptr
     );
 
     // Get current WiFi config
