@@ -15,10 +15,8 @@ void WifiApi::begin() const
             WifiScanner &scanner = app.wifi().getScanner();
 
             StaticJsonDocument<1024> doc;
-            doc["scanning"] = scanner.isScanning();
-            char buf[32];
-            scanner.lastUpdatedAt().iso8601(buf);
-            doc["lastUpdatedAt"] = buf;
+            doc["inProgres"] = scanner.inProgress();
+            doc["isReady"] = scanner.isReady();
 
             const JsonArray arr = doc.createNestedArray("networks");
             const auto& nets = scanner.getNetworks();
@@ -36,7 +34,7 @@ void WifiApi::begin() const
         "/api/wifi/scan", HTTP_POST,
         [](AsyncWebServerRequest* request) {
             WifiScanner &scanner = app.wifi().getScanner();
-            scanner.startScan();
+            scanner.start();
             rd::WebServerManager::sendSuccess(request);
         },nullptr, nullptr
     );

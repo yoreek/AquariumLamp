@@ -13,7 +13,7 @@ void OneWireDeviceApi::begin() const
 
             StaticJsonDocument<1024> doc;
             doc["inProgress"] = scanner.inProgress();
-            doc["completed"] = scanner.completed();
+            doc["isReady"] = scanner.isReady();
             const JsonArray arr = doc.createNestedArray("devices");
             const auto *devices = scanner.devices();
             if (!devices) {
