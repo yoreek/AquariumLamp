@@ -13,7 +13,6 @@ const char FanApi::PauseMode[] = "pause";
 
 void FanApi::begin() const
 {
-    // Get current WiFi config
     _webServer.getServer().on(
         "/api/fan/thermostat", HTTP_GET,
         [](AsyncWebServerRequest *request) {
@@ -25,7 +24,6 @@ void FanApi::begin() const
             rd::WebServerManager::sendSuccess(request, doc);
         });
 
-    // Update WiFi config
     _webServer.getServer().on(
         "/api/fan/thermostat", HTTP_POST,
         WebServerManager::blankCallback, nullptr,

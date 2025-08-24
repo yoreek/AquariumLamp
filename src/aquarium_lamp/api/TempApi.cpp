@@ -8,7 +8,6 @@ extern App app;
 
 void TempApi::begin() const
 {
-    // Get current WiFi config
     _webServer.getServer().on(
         "/api/temp/config", HTTP_GET,
         [](AsyncWebServerRequest *request) {
@@ -25,7 +24,6 @@ void TempApi::begin() const
             rd::WebServerManager::sendSuccess(request, doc);
         });
 
-    // Update WiFi config
     _webServer.getServer().on(
         "/api/temp/config", HTTP_POST,
         WebServerManager::blankCallback, nullptr,
@@ -96,7 +94,7 @@ bool TempApi::parseAddress(const char *addr, byte *arr)
     char *end;
     while (i < 8 && *addr) {
         arr[i] = static_cast<byte>(strtol(addr, &end, 16));
-        if (end == addr || *end != ':') {
+        if (end == addr || (*end != '\0' && *end != ':')) {
             return false; // Invalid format
         }
         addr = end + 1; // Move past the colon
