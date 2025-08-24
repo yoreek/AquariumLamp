@@ -6,10 +6,13 @@ lib_deps =
 	paulstoffregen/Time@^1.6.1
 	jchristensen/Timezone @ ^1.2.4
 	knolleary/PubSubClient @ ^2.8
+	milesburton/DallasTemperature@^3.9.1
+	paulstoffregen/OneWire @ ^2.3.6
 	bblanchon/ArduinoJson @ ^6.21.5
 	bblanchon/StreamUtils @ ^1.8.0
-;	milesburton/DallasTemperature@^3.9.1
-    ReefDuino=git@github.com:yoreek/ReefDuino.git@1.11
+	esp32async/ESPAsyncWebServer@^3.7.3
+	AsyncTCP@3.3.7
+	ReefDuino=file:///home/yura/Documents/PlatformIO/Projects/ReefDuino@1.24
 
 build_flags =
 	-DARDUINOJSON_ENABLE_STD_STRING=1
@@ -17,7 +20,7 @@ build_flags =
 	-DDEBUG_LEVEL=Info
 	-DDEBUG_SERIAL_DEVICE=Serial
 	-DDEBUG_SERIAL_SPEED=921600
-	-DDEBUG_TELNET
+;	-DDEBUG_TELNET
 ;	-DDEBUG_TELNET_PORT=23
 	-DLEDS_NUM=5
 	-DLEDS_SCHEDULES=10
@@ -27,7 +30,7 @@ build_flags =
 ;	-DWITH_ADAFRUIT_SSD1306
 	-DWITH_APP_STATE_MANAGER_DEBUG
 ;	-DWITH_AUTO_SWITCH_DEBUG
-;	-DWITH_DALLAS_SENSOR
+	-DWITH_DALLAS_SENSOR
 ;	-DWITH_DALLAS_SENSOR_DEBUG
 ;	-DWITH_DEBOUNCING_SENSOR_DEBUG
 	-DWITH_DEBUG
@@ -45,14 +48,14 @@ build_flags =
 ;	-DWITH_HTU21DF_DEBUG
 ;	-DWITH_MENU
 	-DWITH_MQTT_MANAGER
-	-DWITH_MQTT_MANAGER_DEBUG
+;	-DWITH_MQTT_MANAGER_DEBUG
 ;	-DWITH_NETWORK_MANAGER_DEBUG
 ;	-DWITH_NTP_MANAGER_DEBUG
 	-DWITH_OTA
 ;	-DWITH_PCF857X
 ;	-DWITH_PZEM004T_DEBUG
-;	-DWITH_RTC_MANAGER_DEBUG
-	-DWITH_SCHEDULED_SWITCH_DEBUG
+	-DWITH_RTC_MANAGER_DEBUG
+;	-DWITH_SCHEDULED_SWITCH_DEBUG
 ;	-DWITH_SMART_JSON_DEBUG
 ;	-DWITH_SMART_STRING_DEBUG
 ;	-DWITH_STATE_MACHINE_DEBUG
@@ -81,7 +84,9 @@ board_build.mcu = esp32
 board_build.f_cpu = 240000000L
 board_build.f_flash = 40000000L
 ;board_build.partitions = huge_app.csv
-board_build.partitions = min_spiffs.csv
+; board_build.partitions = min_spiffs.csv
+board_build.partitions = my_partitions.csv
+board_build.filesystem = littlefs
 framework = arduino
 monitor_speed = 921600
 upload_speed = 921600
@@ -102,4 +107,4 @@ lib_deps =
 [env:esp32dev_ota]
 extends = env:esp32dev
 upload_protocol = espota
-upload_port = 192.168.1.169
+upload_port = 192.168.1.166

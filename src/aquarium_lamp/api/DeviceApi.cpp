@@ -4,6 +4,7 @@
 #include "../AppStateV7.h"
 #include "time/TimeUtil.h"
 #include "version/ReefDuinoVersion.h"
+#include "hass/utils/JsonSmartString.h"
 
 namespace aquarium_lamp {
 extern AppStateV7 appState;
@@ -15,6 +16,9 @@ void DeviceApi::begin() const
         StaticJsonDocument<512> doc;
         char buf[50];
 
+        doc["name"] = &Config::DeviceName;
+        doc["copyright"] = &Config::Copyright;
+        doc["license"] = &Config::License;
         doc["firmware"] = aquarium_lamp::Version.full;
         doc["reefduino"] = ReefDuinoVersion.full;
 

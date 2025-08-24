@@ -10,6 +10,8 @@ public:
     SMART_STRING_DEF_CONST(DeviceSoftwareVersion);
     SMART_STRING_DEF_CONST(DeviceUniqId);
     SMART_STRING_DEF_CONST(DeviceName);
+    SMART_STRING_DEF_CONST(Copyright);
+    SMART_STRING_DEF_CONST(License);
 #if defined(ESP8266)
     static const char *MqttFingerprint;
 #else
