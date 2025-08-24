@@ -14,6 +14,8 @@
 #include "hass/devices/sensor/HassDallasSensor.h"
 #include "hass/devices/HassAutoSwitch.h"
 #include <schedule/ScheduledLedArray.h>
+#include <rtc/DS3231.h>
+#include <rtc/RtcManager.h>
 #include "api/DeviceApi.h"
 #include "api/LampApi.h"
 #include "api/WifiApi.h"
@@ -60,12 +62,17 @@ public:
     };
     FilteredDallasSensor &getTempSensor() { return _tempSensor; };
     OneWireDeviceScanner &getOneWireDeviceScanner() { return _oneWireDeviceScanner; };
+    inline RtcManager *rtc() { return &_rtc; };
+    static void syncTime(time_t now, NtpManager *ntpManager, void *data);
 
 protected:
     SmoothPwmSwitch *_ledArray[LEDS_NUM];
     void _processLedSwitches();
     ScheduledLedArray<LEDS_NUM, LEDS_SCHEDULES> _lamp;
     OneWire _oneWire;
+    TwoWire _i2cOne;
+    DS3231 _ds3231;
+    RtcManager _rtc;
     DallasTemperature _dallasSensors;
     FilteredDallasSensor _tempSensor;
     TriggeredTemperatureSensor _overheatingSensor;

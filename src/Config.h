@@ -24,4 +24,7 @@ public:
     static const uint8_t FanPin;
     static const uint8_t OneWirePin;
     static const uint32_t SensorStateUpdateInterval;
+    static const int I2cOneSda;
+    static const int I2cOneScl;
+    static const uint32_t I2cOneFreq;
 };

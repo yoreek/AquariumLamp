@@ -18,6 +18,13 @@ App::App()
       _ledArray(),
       _lamp(reinterpret_cast<AbstractPwmSwitch **>(_ledArray), &appState.lamp),
       _oneWire(Config::OneWirePin),
+#if defined(ESP32)
+      _i2cOne(0),
+#elif defined(ESP8266)
+      _i2cOne(),
+#endif
+      _ds3231(&_i2cOne),
+      _rtc(&_ds3231),
       _dallasSensors(&_oneWire),
       _tempSensor(&_dallasSensors, &appState.tempSensor),
       _overheatingSensor(&_tempSensor, &appState.overheatingSensor),
@@ -46,13 +53,13 @@ App::App()
     _haLamp.setName(&LampName);
     for (uint8_t i = 0; i < LEDS_NUM; i++) {
         _ledArray[i] = new SmoothPwmSwitch(
-                new LedcPwmSwitch(
-                        Config::LedPin[i],
-                        Config::LedFirstChannel + i,
-                        Config::LedFreq,
-                        Config::LedResolution,
-                        Config::LedInverted),
-                Config::LedMaxChangeAtOnce);
+            new LedcPwmSwitch(
+                Config::LedPin[i],
+                Config::LedFirstChannel + i,
+                Config::LedFreq,
+                Config::LedResolution,
+                Config::LedInverted),
+            Config::LedMaxChangeAtOnce);
     }
     _mainDevice.addDevice(&_haLamp);
 
@@ -72,6 +79,11 @@ void App::begin()
 #else
     setMqttCACert(Config::MqttCaCert);
 #endif
+
+    _ntp.onSync(syncTime, this);
+    _i2cOne.begin(Config::I2cOneSda, Config::I2cOneScl);
+    _i2cOne.setClock(Config::I2cOneFreq);
+
     for (auto & led : _ledArray)
     {
         led->begin();
@@ -94,9 +106,10 @@ void App::_processLedSwitches()
         led->loop();
 }
 
-void App::loop(uint32_t uptime)
+void App::loop(const uint32_t uptime)
 {
     HaApplication::loop(uptime);
+    _rtc.loop(uptime);
     _lamp.loop(uptime);
     _tempSensor.loop(uptime);
     _overheatingSensor.loop(uptime);
@@ -127,29 +140,13 @@ void App::_updateSensorsStates()
     }
 }
 
-// void App::_scanDevices()
-// {
-//     if (_oneWireDeviceScanner.inProgress()) {
-//         LOG_DEBUG("INPROGRESS");
-//         return;
-//     }
-//
-//     if (_oneWireDeviceScanner.completed()) {
-//         LOG_DEBUG("Found: %d devices", _oneWireDeviceScanner.devicesCount());
-//         for (size_t i = 0; i < _oneWireDeviceScanner.devicesCount(); i++) {
-//             const auto &device = _oneWireDeviceScanner.devices()[i];
-//             LOG_DEBUG("Device %d: %02X %02X %02X %02X %02X %02X %02X %02X",
-//                       i,
-//                       device[0], device[1], device[2], device[3],
-//                       device[4], device[5], device[6], device[7]);
-//         }
-//         _oneWireDeviceScanner.reset();
-//         _lastScannedAt = millis();
-//     }
-//
-//     if ((millis() - _lastScannedAt) >= 10000) {
-//         LOG_DEBUG("start scanning for OneWire devices");
-//         _oneWireDeviceScanner.start();
-//     }
-// }
+void App::syncTime(const time_t now, NtpManager *ntpManager, void *data)
+{
+    auto *app = static_cast<App *> (data);
+    const rd::DateTime x(now);
+    app->rtc()->adjustTime(x);
+
+    WifiApplication::syncTime(now, ntpManager, data);
+}
+
 }

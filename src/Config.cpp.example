@@ -24,3 +24,7 @@ const bool Config::LedInverted = false;
 const float Config::LedMaxChangeAtOnce = 0.01;
 const uint8_t Config::FanPin = 23;
 const uint8_t Config::OneWirePin = 4;
+const uint32_t Config::SensorStateUpdateInterval = 10000;
+const int Config::I2cOneSda = 21;
+const int Config::I2cOneScl = 22;
+const uint32_t Config::I2cOneFreq = 400000UL;
