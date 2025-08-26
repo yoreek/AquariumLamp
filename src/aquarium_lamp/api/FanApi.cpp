@@ -14,7 +14,7 @@ const char FanApi::PauseMode[] = "pause";
 void FanApi::begin() const
 {
     _webServer.getServer().on(
-        "/api/fan/thermostat", HTTP_GET,
+        "/api/fan/cooling_manager", HTTP_GET,
         [](AsyncWebServerRequest *request) {
             StaticJsonDocument<256> doc;
 
@@ -25,7 +25,7 @@ void FanApi::begin() const
         });
 
     _webServer.getServer().on(
-        "/api/fan/thermostat", HTTP_POST,
+        "/api/fan/cooling_manager", HTTP_POST,
         WebServerManager::blankCallback, nullptr,
         [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t, size_t) {
             StaticJsonDocument<256> doc;

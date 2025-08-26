@@ -4,8 +4,8 @@
 namespace aquarium_lamp {
 extern AppStateV7 appState;
 
-SMART_STRING_INIT_CONST(App, LampUniqId, "lamp2");
-SMART_STRING_INIT_CONST(App, LampName, "Lamp2");
+SMART_STRING_INIT_CONST(App, LampUniqId, "lamp");
+SMART_STRING_INIT_CONST(App, LampName, "Lamp");
 SMART_STRING_INIT_CONST(App, TempSensorUniqId, "temp");
 SMART_STRING_INIT_CONST(App, TempSensorName, "Temp");
 SMART_STRING_INIT_CONST(App, FanSwitchUniqId, "fan");
